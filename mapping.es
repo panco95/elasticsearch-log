@@ -1,25 +1,49 @@
 // 创建索引时携带mapping
-PUT /my-index-000001
+PUT /test
 {
-  "mappings": {
-    "properties": {
-      "age":    { "type": "integer" },  
-      "email":  { "type": "keyword"  }, 
-      "name":   { "type": "text"  }     
+    "settings": {
+        "number_of_shards": 1,
+        "number_of_replicas": 0
+    },
+    "mappings": {
+        "properties": {
+            "age": {
+                "type": "integer"
+            },
+            "email": {
+                "type": "keyword"
+            },
+            "name": {
+                "type": "text"
+            },
+            "family": {
+                "type": "object"
+            }
+        }
     }
-  }
 }
 
 // 给索引添加mapping
-PUT /my-index-000001/_mapping
+PUT /test/_mapping
 {
-  "properties": {
-    "employee-id": {
-      "type": "keyword",
-      "index": false
+    "properties": {
+        "address": {
+            "type": "keyword",
+            "index": false
+        }
     }
-  }
 }
 
 // 查询索引mapping
-GET /my-index-000001/_mapping
+GET /test/_mapping
+
+// 别名字段
+PUT /test/_mapping
+{
+    "properties": {
+        "nickname": {
+            "type": "alias",
+            "path": "name"
+        }
+    }
+}

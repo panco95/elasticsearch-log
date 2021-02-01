@@ -1,5 +1,5 @@
 // 全部查询
-GET /orders/_search
+GET /test/_search
 {
     "track_total_hits": true, //强制进行精确计数
     "query": {
@@ -21,25 +21,38 @@ track_total_hits参数
 */
 
 // 字段匹配查询
-GET /orders/_search
+GET /test/_search
 {
     "track_total_hits": true,
     "query": {
         "match": {
-            "OrderNo": "20122820081703042436"
+            "name": "panco"
         }
     }
 }
 
 // 只查询有没有数据，不查数据
-GET /orders/_search
+GET /test/_search
 {
     "track_total_hits": true,
     "query": {
         "match": {
-            "OrderNo": "20122820081703042436"
+            "name": "panco"
         }
     },
     "size": 0, // 数据读取：0
     "terminate_after": 1 // 到达查询数(1)后提前终止
+}
+
+// 查询状态大于3的订单
+GET /test/_search
+{
+    "track_total_hits": true,
+    "query": {
+        "range": {
+            "age": {
+                "gt": 18
+            }
+        }
+    }
 }
