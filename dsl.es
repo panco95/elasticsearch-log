@@ -37,7 +37,7 @@ PUT test/_doc/1
     "content": "panco is the best"
 }
 
-// bool不会做分词优化
+// bool联合查询，must must_not should filter里面可以包含match或term
 GET /test/_search
 {
     "query": {
@@ -46,17 +46,32 @@ GET /test/_search
                 "term": {
                     "content": "panco"
                 }
+            },
+            "must_not": {
+                "term": {
+                    "content": "the"
+                }
             }
         }
     }
 }
 
-// match全文匹配，会分词优化
+// match全文查询，会分词优化
 GET /test/_search
 {
     "query": {
         "match": {
-            "content": "panco best"
+            "content": "panco is a best"
+        }
+    }
+}
+
+// term不分词查询
+GET /test/_search
+{
+    "query": {
+        "term": {
+            "content": "panco the"
         }
     }
 }
