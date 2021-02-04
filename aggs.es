@@ -49,7 +49,7 @@ PUT /orders
 
 
 // 聚合统计:
-订单状态为9里面，每个shopid里面每个account的订单数量
+// 订单状态为9里面，每个shopid里面每个account的订单数量
 GET /orders/_search
 {
     "track_total_hits": true,
