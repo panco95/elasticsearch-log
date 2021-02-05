@@ -53,16 +53,25 @@ GET /sdklogs/_search
     }
 }
 
-// 统计2020-5-1导2020-6-1之间的聚合，聚合维度有channel、systemName、serverId、source
+// 统计1000061：2020-5-1导2020-6-1之间的聚合，聚合维度有channel、systemName、serverId、source
 GET /sdklogs/_search
 {
     "track_total_hits": true,
     "size": 0,
     "query": {
-        "range": {
-            "ymd": {
-                "gte": "2020-05-01",
-                "lt": "2020-06-01"
+        "bool": {
+            "must": {
+                "term": {
+                    "appId": "1000061"
+                }
+            },
+            "filter": {
+                "range": {
+                    "ymd": {
+                        "gte": "2020-02-01",
+                        "lt": "2021-01-05"
+                    }
+                }
             }
         }
     },
