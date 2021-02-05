@@ -90,7 +90,7 @@ GET /sdklogs2/_search
                 "field": "channel"
             },
             "aggs": {
-                "groupby_systemName": {
+                "groupby_systemName": {rm 
                     "terms": {
                         "field": "systemName"
                     },
