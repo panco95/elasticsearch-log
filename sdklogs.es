@@ -1,4 +1,4 @@
-PUT /sdklogs
+PUT /sdklogs2
 {
     "settings": {
         "number_of_shards": 1,
@@ -30,6 +30,9 @@ PUT /sdklogs
             "channel": {
                 "type": "keyword"
             },
+            "mac": {
+                "type": "keyword"
+            },
             "imei": {
                 "type": "keyword"
             },
@@ -41,20 +44,26 @@ PUT /sdklogs
             },
             "source": {
                 "type": "keyword"
+            },
+            "time": {
+                "type": "date",
+                "format": "yyyy-MM-dd HH:mm:ss"
             }
         }
     }
 }
 
-GET /sdklogs/_search
+GET /sdklogs2/_search
 {
+    "track_total_hits": true,
+    "size": 0,
     "query": {
         "match_all": {}
     }
 }
 
 // 统计1000061：2020-5-1导2020-6-1之间的聚合，聚合维度有channel、systemName、serverId、source
-GET /sdklogs/_search
+GET /sdklogs2/_search
 {
     "track_total_hits": true,
     "size": 0,
@@ -62,13 +71,13 @@ GET /sdklogs/_search
         "bool": {
             "must": {
                 "term": {
-                    "appId": "1000061"
+                    "appId": "1000084"
                 }
             },
             "filter": {
                 "range": {
                     "ymd": {
-                        "gte": "2020-02-01",
+                        "gte": "2020-01-01",
                         "lt": "2021-01-05"
                     }
                 }
@@ -105,3 +114,22 @@ GET /sdklogs/_search
     }
 }
 
+// 按照一天中每分钟间隔统计数据
+GET /sdklogs2/_search
+{
+    "track_total_hits": true,
+    "size": 0,
+    "query": {
+        "term": {
+            "ymd": "2020-01-17"
+        }
+    },
+    "aggs": {
+        "time_interval": {
+            "date_histogram": {
+                "field": "time",
+                "fixed_interval": "1m"
+            }
+        }
+    }
+}

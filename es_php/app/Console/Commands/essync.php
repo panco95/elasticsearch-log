@@ -45,12 +45,12 @@ class essync extends Command
             $key = "Tables_in_es (accountCreate-%)";
             $tableName = $result->$key;
             print_r($tableName);
-            DB::table($tableName)->orderBy('id')->chunk(1000, function ($logs) use ($client) {
+            DB::table($tableName)->orderBy('id')->chunk(10000, function ($logs) use ($client) {
                 $params = ['body' => []];
                 foreach ($logs as $log) {
                     $params['body'][] = [
                         'index' => [
-                            '_index' => 'sdklogs',
+                            '_index' => 'sdklogs2',
                         ]
                     ];
 
