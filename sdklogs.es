@@ -114,7 +114,7 @@ GET /sdklogs2/_search
     }
 }
 
-// 按照一天中每分钟间隔统计数据
+// 按照一天中每分钟间隔统计数据，另外加上去重accountId计数
 GET /sdklogs2/_search
 {
     "track_total_hits": true,
@@ -129,12 +129,20 @@ GET /sdklogs2/_search
             "date_histogram": {
                 "field": "time",
                 "fixed_interval": "1m"
+            },
+            "aggs": {
+                "accounts": {
+                    "cardinality": {
+                        "field": "accountId",
+                        "precision_threshold": 40000
+                    }
+                }
             }
         }
     }
 }
 
-// 去重统计，不是准确值，是近乎值
+// 去重统计，不是准确值，是近乎值，40000是模糊的最大值，经过测试设置为40000跟mysql的distinct(count())结果一致
 GET /sdklogs2/_search
 {
     "track_total_hits": true,
@@ -148,7 +156,7 @@ GET /sdklogs2/_search
         "accounts": {
             "cardinality": {
                 "field": "accountId",
-                "precision_threshold": 4000
+                "precision_threshold": 40000
             }
         }
     }
