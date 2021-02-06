@@ -90,7 +90,7 @@ GET /sdklogs2/_search
                 "field": "channel"
             },
             "aggs": {
-                "groupby_systemName": {rm 
+                "groupby_systemName": {
                     "terms": {
                         "field": "systemName"
                     },
@@ -129,6 +129,26 @@ GET /sdklogs2/_search
             "date_histogram": {
                 "field": "time",
                 "fixed_interval": "1m"
+            }
+        }
+    }
+}
+
+// 去重统计，不是准确值，是近乎值
+GET /sdklogs2/_search
+{
+    "track_total_hits": true,
+    "size": 0,
+    "query": {
+        "term": {
+            "ymd": "2020-01-17"
+        }
+    },
+    "aggs": {
+        "accounts": {
+            "cardinality": {
+                "field": "accountId",
+                "precision_threshold": 4000
             }
         }
     }
