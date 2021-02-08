@@ -5,21 +5,21 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class essync extends Command
+class essync2 extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'essync';
+    protected $signature = 'essync2';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'sync elasticsearch datas';
+    protected $description = 'ownthink_v2 mysql input';
 
     /**
      * Create a new command instance.
@@ -40,26 +40,24 @@ class essync extends Command
     {
         $hosts = ['http://127.0.0.1:9200'];
         $client = \Elasticsearch\ClientBuilder::create()->setHosts($hosts)->build();
-        $results = DB::select("show tables like 'login-%'");
-        foreach ($results as $result) {
-            $key = "Tables_in_es (login-%)";
-            $tableName = $result->$key;
-            print_r($tableName);
-            DB::table($tableName)->orderBy('id')->chunk(10000, function ($logs) use ($client) {
-                $params = ['body' => []];
-                foreach ($logs as $log) {
-                    $params['body'][] = [
-                        'index' => [
-                            '_index' => 'sdklogs2',
-                        ]
-                    ];
+        $tableName = "ownthink_v2";
+        $count = 0;
+        DB::table($tableName)->orderBy('id')->chunk(1000, function ($logs) use ($client, $count) {
+            $params = ['body' => []];
+            foreach ($logs as $log) {
+                $params['body'][] = [
+                    'index' => [
+                        '_index' => 'ownthink_v2',
+                    ],
+                    'id' => $log->id
+                ];
 
-                    $log->input = "login";
-                    $params['body'][] = $log;
-                }
-                $client->bulk($params);
-            });
-        }
+                $params['body'][] = $log;
+            }
+            $client->bulk($params);
+            echo ++$count . ' ';
+        });
     }
+
 
 }

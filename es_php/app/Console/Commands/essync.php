@@ -40,9 +40,9 @@ class essync extends Command
     {
         $hosts = ['http://127.0.0.1:9200'];
         $client = \Elasticsearch\ClientBuilder::create()->setHosts($hosts)->build();
-        $results = DB::select("show tables like 'accountCreate-%'");
+        $results = DB::select("show tables like 'login-%'");
         foreach ($results as $result) {
-            $key = "Tables_in_es (accountCreate-%)";
+            $key = "Tables_in_es (login-%)";
             $tableName = $result->$key;
             print_r($tableName);
             DB::table($tableName)->orderBy('id')->chunk(10000, function ($logs) use ($client) {
@@ -54,7 +54,7 @@ class essync extends Command
                         ]
                     ];
 
-                    $log->input = "accountCreate";
+                    $log->input = "login";
                     $params['body'][] = $log;
                 }
                 $client->bulk($params);

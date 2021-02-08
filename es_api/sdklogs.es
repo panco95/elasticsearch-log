@@ -71,7 +71,7 @@ GET /sdklogs2/_search
         "bool": {
             "must": {
                 "term": {
-                    "appId": "1000084"
+                    "appId": "1000061"
                 }
             },
             "filter": {
