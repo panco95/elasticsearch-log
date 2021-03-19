@@ -39,15 +39,11 @@ GET /ownthink_v2/_search
 GET /ownthink_v2/_search
 {
     "track_total_hits": true,
-    "size": 20,
+    "size": 100,
     "from": 0,
     "query": {
-        "bool": {
-            "must": {
-                "match": {
-                    "name": "关键字"
-                }
-            }
+        "match": {
+            "name": "口罩"
         }
     }
 }

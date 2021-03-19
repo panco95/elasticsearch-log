@@ -35,7 +35,7 @@ PUT /test/_mapping
 }
 
 // 查询索引mapping
-GET /test/_mapping
+GET /ownthink_v2/_mapping
 
 // 别名字段
 PUT /test/_mapping
